@@ -1,4 +1,4 @@
-package com.twitter.automation.utils;
+package com.twitter.automation.utils.properties;
 
 import org.apache.commons.lang3.SystemUtils;
 
@@ -8,14 +8,14 @@ public class Properties {
 
     public static BrowserTypes getBrowser() {
         try {
-            return BrowserTypes.valueOf(System.getProperty(PropertiesNames.BROWSER.toString()).toUpperCase());
+            return BrowserTypes.valueOf(System.getProperty(com.twitter.automation.utils.properties.PropertiesNames.BROWSER.toString()).toUpperCase());
         } catch (Exception e) {
             return BrowserTypes.CHROME;
         }
     }
 
     public static String GetDriverPath() {
-        String basePath = System.getProperty(PropertiesNames.DRIVERS_DIR.toString());
+        String basePath = System.getProperty(com.twitter.automation.utils.properties.PropertiesNames.DRIVERS_DIR.toString());
         if (basePath == null)
             return null;
 

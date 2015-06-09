@@ -1,5 +1,6 @@
-package com.twitter.automation.utils;
+package com.twitter.automation.utils.reporting;
 
+import com.twitter.automation.utils.base.BaseTest;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
@@ -19,7 +20,7 @@ public class ScreenshotMaker extends TestListenerAdapter {
 
         try {
 
-            File scrFile = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
+            File scrFile = ((TakesScreenshot) BaseTest.driver()).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(scrFile, new File(destFile));
             Reporter.log(
                     String.format(

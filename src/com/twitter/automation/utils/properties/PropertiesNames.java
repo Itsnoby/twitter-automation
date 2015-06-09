@@ -1,4 +1,4 @@
-package com.twitter.automation.utils;
+package com.twitter.automation.utils.properties;
 
 public enum PropertiesNames {
     BROWSER("browser"), DRIVERS_DIR("drivers.dir");

@@ -1,30 +1,25 @@
 package com.twitter.automation.actions;
 
-import com.twitter.automation.pages.ResultsPage;
-import com.twitter.automation.pages.SearchPage;
-import com.twitter.automation.utils.Reporter;
-import org.openqa.selenium.WebDriver;
+import com.twitter.automation.pages.LoginPage;
+import com.twitter.automation.pages.Pages;
+import com.twitter.automation.utils.base.BaseActions;
+import com.twitter.automation.utils.base.BasePage;
+import com.twitter.automation.utils.reporting.Reporter;
 
-import java.util.List;
+public class GeneralActions extends BaseActions {
 
-public class GeneralActions {
-    private WebDriver driver;
+    public void login(String login, String password) {
+        Reporter.logAction("Log in:");
 
-    private SearchPage searchPage;
-    private ResultsPage resultsPage;
+        driver().get(BasePage.BASE_URL);
 
-    public GeneralActions(WebDriver driver) {
-        this.driver = driver;
+        LoginPage page = Pages.loginPage();
+        page.waitForLoad();
+        page.typeLogin(login);
+        page.typePassword(password);
+        page.clickLoginButton();
 
-        searchPage = new SearchPage(driver);
-        resultsPage = new ResultsPage(driver);
-    }
-
-    public List<String> search(String query) {
-        Reporter.log("Search:");
-        searchPage.open();
-        searchPage.typeSearchQuery(query);
-        resultsPage.waitForResultsToLoad();
-        return resultsPage.getResults();
+        Pages.navigationBar().waitForLoad();
+        Pages.navigationBar().waitForLoad();
     }
 }

@@ -59,7 +59,7 @@
                 haltOnfailure="false"
                 delegateCommandSystemProperties="true"
                 useDefaultListeners="false"
-                listeners="org.uncommons.reportng.HTMLReporter, com.twitter.automation.utils.ScreenshotMaker">
+                listeners="org.uncommons.reportng.HTMLReporter, com.twitter.automation.utils.reporting.ScreenshotMaker">
 
             <xmlfileset dir="${basedir}" includes="testng.xml"/>
 

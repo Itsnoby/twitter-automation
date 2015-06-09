@@ -1,7 +1,5 @@
 # Unnecessary project files
 .idea
 *.iml
-bin
-obj
 out
 build

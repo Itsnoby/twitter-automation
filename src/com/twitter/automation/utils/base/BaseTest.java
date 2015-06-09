@@ -1,5 +1,8 @@
-package com.twitter.automation.utils;
+package com.twitter.automation.utils.base;
 
+import com.twitter.automation.actions.Actions;
+import com.twitter.automation.pages.Pages;
+import com.twitter.automation.utils.properties.Properties;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -10,12 +13,17 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
 import java.lang.reflect.Field;
+import java.util.concurrent.TimeUnit;
 
-public class BaseTest {
-    public static WebDriver driver;
+public abstract class BaseTest {
+    private static WebDriver driver;
+
+    public static WebDriver driver() {
+        return driver;
+    }
 
     @BeforeClass
-    public void driverSetUp() {
+    public void setUp() {
         System.out.println("Browser is: " + Properties.getBrowser().toString());
 
         switch (Properties.getBrowser()) {
@@ -52,10 +60,16 @@ public class BaseTest {
                 };
                 break;
         }
+
+        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(BasePage.ELEMENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
     @AfterClass
-    public void driverTearDown() {
+    public void tearDown() {
         driver.quit();
+
+        Pages.clear();
+        Actions.clear();
     }
 }
