@@ -9,6 +9,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
@@ -24,8 +25,6 @@ public abstract class BaseTest {
 
     @BeforeClass
     public void setUp() {
-        System.out.println("Browser is: " + Properties.getBrowser().toString());
-
         switch (Properties.getBrowser()) {
             case FIREFOX:
                 driver = new FirefoxDriver();
@@ -71,5 +70,9 @@ public abstract class BaseTest {
 
         Pages.clear();
         Actions.clear();
+    }
+
+    protected void skipTest(String message) {
+        throw new SkipException(message);
     }
 }

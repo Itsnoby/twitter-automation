@@ -14,8 +14,21 @@ public final class Pages {
         return pages.getInstance(LoginPage.class);
     }
 
+    public static ProfilePage profilePage() {
+        return pages.getInstance(ProfilePage.class);
+    }
+
+    public static SuggestionsPage suggestionsPage() {
+        return pages.getInstance(SuggestionsPage.class);
+    }
+
     public static NavigationBar navigationBar() {
         return pages.getInstance(NavigationBar.class);
     }
+
+    public static TweetDialog tweetDialog() {
+        return pages.getInstance(TweetDialog.class);
+    }
+
 
 }

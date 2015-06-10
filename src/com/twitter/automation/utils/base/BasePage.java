@@ -1,8 +1,11 @@
 package com.twitter.automation.utils.base;
 
 import com.twitter.automation.utils.reporting.Reporter;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Point;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.concurrent.TimeUnit;
@@ -31,6 +34,24 @@ public abstract class BasePage extends DriverContainer {
         input.sendKeys(value);
     }
 
+    protected String getText(String message, Locator locator, Object... args) {
+        Reporter.log(message);
+
+        WebElement element = driver().findElement(locator.getLocator(args));
+        String type = element.getTagName().toLowerCase();
+
+        if (type.equals("input") || type.equals("textarea")) {
+            String placeholder = element.getAttribute("placeholder");
+            return (placeholder != null && placeholder.length() > 0)
+                    ? element.getAttribute("value").replace(placeholder, "")
+                    : element.getAttribute("value");
+        }
+        if (type.equals("select")) {
+            return new Select(element).getFirstSelectedOption().getText();
+        }
+        return element.getText();
+    }
+
     protected void waitForVisibility(String message, Locator locator, Object... args) {
         waitForVisibility(ELEMENT_TIMEOUT_SECONDS, message, locator, args);
     }
@@ -44,5 +65,64 @@ public abstract class BasePage extends DriverContainer {
         driver().manage().timeouts().implicitlyWait(ELEMENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
     }
 
+    protected void waitForInvisibility(String message, Locator locator, Object... args) {
+        waitForInvisibility(ELEMENT_TIMEOUT_SECONDS, message, locator, args);
+    }
+
+    protected void waitForInvisibility(int timeout, String message, Locator locator, Object... args) {
+        Reporter.log(message);
+
+        driver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver(), timeout);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(locator.getLocator(args)));
+        driver().manage().timeouts().implicitlyWait(ELEMENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+    }
+
+    protected void waitToBeClickable(String message, Locator locator, Object... args) {
+        waitToBeClickable(ELEMENT_TIMEOUT_SECONDS, message, locator, args);
+    }
+
+    protected void waitToBeClickable(int timeout, String message, Locator locator, Object... args) {
+        Reporter.log(message);
+
+        driver().manage().timeouts().implicitlyWait(timeout, TimeUnit.SECONDS);
+        WebDriverWait wait = new WebDriverWait(driver(), timeout);
+        wait.until(ExpectedConditions.elementToBeClickable(locator.getLocator(args)));
+        driver().manage().timeouts().implicitlyWait(ELEMENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+
+        // wait until the element on the same place
+        WebElement element = driver().findElement(locator.getLocator(args));
+        Point location;
+        do {
+            location = element.getLocation();
+            try { Thread.sleep(500); } catch (Exception e) { }
+        } while (!location.equals(element.getLocation()));
+    }
+
+    protected int getCount(String message, Locator locator, Object... args) {
+        return this.getCount(0, message, locator, args);
+    }
+
+    protected int getCount(int waitInSeconds, String message, Locator locator, Object... args) {
+        Reporter.log(message);
+
+        driver().manage().timeouts().implicitlyWait(waitInSeconds, TimeUnit.SECONDS);
+        int size =  driver().findElements(locator.getLocator(args)).size();
+        driver().manage().timeouts().implicitlyWait(ELEMENT_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        return size;
+    }
+
+    protected boolean isPresent(String message, Locator locator, Object... args) {
+        return getCount(message, locator, args) > 0;
+    }
+
+    protected boolean isPresent(int waitInSeconds, String message, Locator locator, Object... args) {
+        return getCount(waitInSeconds, message, locator, args) > 0;
+    }
+
+    protected void executeJS(String message, String script, Locator locator, Object... args) {
+        Reporter.log(message);
+        ((JavascriptExecutor) driver()).executeScript(script, driver().findElement(locator.getLocator(args)));
+    }
 
 }
