@@ -8,4 +8,10 @@
         </classes>
     </test>
 
+    <test name="Failed test example" >
+        <classes>
+            <class name="com.twitter.automation.tests.SomeFailedTest" />
+        </classes>
+    </test>
+
 </suite>
