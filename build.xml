@@ -48,8 +48,8 @@
    <target name="testAll" depends="prepare">
 
         <path id="classpath">
-            <fileset dir="${lib.dir}" includes="/*.jar"/>
-            <fileset dir="${jar.dir}" includes="**/*.jar"/>
+            <fileset dir="${lib.dir}" includes="*.jar"/>
+            <fileset dir="${jar.dir}" includes="*.jar"/>
         </path>
 
         <testng classpathref="classpath"
@@ -60,6 +60,7 @@
                 delegateCommandSystemProperties="true"
                 useDefaultListeners="false"
                 listeners="org.uncommons.reportng.HTMLReporter, com.twitter.automation.utils.reporting.ScreenshotMaker">
+
 
             <xmlfileset dir="${basedir}" includes="testng.xml"/>
 
