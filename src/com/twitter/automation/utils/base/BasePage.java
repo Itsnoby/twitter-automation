@@ -95,7 +95,7 @@ public abstract class BasePage extends DriverContainer {
         Point location;
         do {
             location = element.getLocation();
-            try { Thread.sleep(500); } catch (Exception e) { }
+            BaseActions.wait(0, 500);
         } while (!location.equals(element.getLocation()));
     }
 
@@ -124,5 +124,4 @@ public abstract class BasePage extends DriverContainer {
         Reporter.log(message);
         ((JavascriptExecutor) driver()).executeScript(script, driver().findElement(locator.getLocator(args)));
     }
-
 }

@@ -14,5 +14,11 @@ public final class Actions {
         return actions.getInstance(GeneralActions.class);
     }
 
+    public static TweetsActions tweetsActions() {
+        return actions.getInstance(TweetsActions.class);
+    }
 
+    public static UsersActions usersActions() {
+        return actions.getInstance(UsersActions.class);
+    }
 }
